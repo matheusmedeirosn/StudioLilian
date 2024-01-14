@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AgendamentoService {
@@ -52,13 +53,24 @@ public class AgendamentoService {
         return repository.findById(id).orElse(null);
     }
 
-    public Agendamento atualizar(Long id, Agendamento agendamento) {
-        if (repository.existsById(id)) {
-            agendamento.setId(id); // Certifique-se de que o ID é o correto
-            return repository.save(agendamento);
+    public Agendamento atualizar(Long id, Agendamento agendamentoAtualizado) {
+        Optional<Agendamento> agendamentoExistente = repository.findById(id);
+
+        if (agendamentoExistente.isPresent()) {
+            Agendamento agendamentoParaAtualizar = agendamentoExistente.get();
+
+            // Atualize apenas os campos permitidos
+            agendamentoParaAtualizar.setNomeCliente(agendamentoAtualizado.getNomeCliente());
+            agendamentoParaAtualizar.setProcedimentos(agendamentoAtualizado.getProcedimentos());
+            agendamentoParaAtualizar.setData(agendamentoAtualizado.getData());
+            agendamentoParaAtualizar.setHorario(agendamentoAtualizado.getHorario());
+
+            // Salve a entidade atualizada no banco de dados
+            return repository.save(agendamentoParaAtualizar);
         }
         return null;
     }
+
 
     public boolean deletar(Long id) {
         if (repository.existsById(id)) {

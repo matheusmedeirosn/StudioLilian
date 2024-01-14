@@ -51,14 +51,18 @@ public class AgendamentoController {
 
     // Atualizar Agendamento
     @PutMapping("/{id}")
-    public ResponseEntity<Agendamento> atualizarAgendamento(@PathVariable Long id, @RequestBody Agendamento agendamento) {
-        Agendamento atualizado = agendamentoService.atualizar(id, agendamento);
-        if (atualizado != null) {
-            return ResponseEntity.ok(atualizado);
+    public ResponseEntity<Agendamento> editarAgendamento(@PathVariable Long id, @RequestBody AgendamentoDTO novoAgendamentoDTO) {
+        // Chame o serviço para editar o agendamento
+        Agendamento agendamentoEditado = agendamentoService.editarAgendamento(id, novoAgendamentoDTO);
+
+        if (agendamentoEditado != null) {
+            return ResponseEntity.ok(agendamentoEditado); // Retorna o agendamento editado se a operação for bem-sucedida
         } else {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.notFound().build(); // Retorna status 404 se o agendamento não for encontrado
         }
     }
+
+
 
     // Cancelar/Deletar Agendamento
     @DeleteMapping("/{id}")

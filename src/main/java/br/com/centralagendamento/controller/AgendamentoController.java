@@ -12,7 +12,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://127.0.0.1:5500")
+@CrossOrigin(origins = "https://studiolilianfront-production.up.railway.app")
 @RequestMapping("/api/agendamentos")
 public class AgendamentoController {
 
